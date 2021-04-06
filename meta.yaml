@@ -1,0 +1,41 @@
+version: v2
+publisher: eclipse
+type: Che Editor
+displayName: jupyter-notebook
+id: org.eclipse.che.editor.jupyter
+title: Jupyter Notebook as Editor for Eclipse Che
+description: Jupyter Notebook as Editor for Eclipse Che
+icon: https://jupyter.org/assets/main-logo.svg
+category: Editor
+spec:
+  endpoints:
+   -  name: "jupyter"
+      public: true
+      targetPort: 8888
+      attributes:
+        protocol: http
+        type: ide
+  containers:
+   - name: jupyter-notebook
+     image: "ksmster/s2i-minimal-notebook"
+     mountSources: true
+     env:
+         - name: JUPYTER_NOTEBOOK_DIR
+           value: /projects
+     volumes:
+         - mountPath: "/projects"
+           name: projects
+     ports:
+         - exposedPort: 8888
+     memoryLimit: "2048M"
+   - name: jupyter-notebook
+     image: "ksmster/s2i-minimal-notebook"
+     env:
+         - name: JUPYTER_NOTEBOOK_DIR
+           value: /projects
+     volumes:
+         - mountPath: "/projects"
+           name: projects
+     ports:
+         - exposedPort: 8888
+     memoryLimit: "512M"
